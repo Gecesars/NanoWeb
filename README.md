@@ -1,118 +1,305 @@
-NanoVNA - Very tiny handheld Vector Network Analyzer
-==========================================================
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NanoWeb Project</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2em;
+        line-height: 1.6;
+      }
+      .language-switch {
+        position: fixed;
+        top: 1em;
+        right: 2em;
+      }
+      .language-switch a {
+        margin-left: 1em;
+        text-decoration: none;
+        color: #007acc;
+      }
+      pre {
+        background-color: #f4f4f4;
+        padding: 1em;
+        overflow-x: auto;
+      }
+      code {
+        background-color: #eee;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        margin-top: 1.2em;
+      }
+      ul {
+        margin-left: 2em;
+      }
+      a {
+        color: #007acc;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Language Switch Placeholder -->
+    <div class="language-switch">
+      <strong>Language:</strong>
+      <a href="#" title="Switch to Portuguese">Portuguese</a>
+      <a href="#" title="Switch to Spanish">Spanish</a>
+      <!-- Currently English -->
+    </div>
 
-[![GitHub release](http://img.shields.io/github/release/ttrftech/NanoVNA.svg?style=flat)][release]
-[![CircleCI](https://circleci.com/gh/ttrftech/NanoVNA.svg?style=shield)](https://circleci.com/gh/ttrftech/NanoVNA)
+    <h1>NanoWeb</h1>
+    <p>
+      NanoWeb is a comprehensive project focused on customizing and developing
+      an advanced antenna testing system. This solution leverages a web server
+      to capture, analyze, and share data related to antenna products from
+      <a href="http://www.idealantenas.com.br" target="_blank">IdealAntenas</a>,
+      providing a professional and user-friendly interface for antenna testing
+      and data management.
+    </p>
 
-[release]: https://github.com/ttrftech/NanoVNA/releases
+    <h2>Table of Contents</h2>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#project-structure">Project Structure</a></li>
+      <li><a href="#installation-and-setup">Installation and Setup</a></li>
+      <li><a href="#usage">Usage</a></li>
+      <li><a href="#development-workflow">Development Workflow</a></li>
+      <li><a href="#contributing">Contributing</a></li>
+      <li><a href="#license">License</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
 
-<div align="center">
-<img src="/doc/nanovna.jpg" width="480px">
-</div>
+    <h2 id="overview">Overview</h2>
+    <p>
+      NanoWeb integrates customized firmware for antenna testing devices with a
+      modern web interface. The primary objectives are:
+    </p>
+    <ul>
+      <li>
+        <strong>Advanced Radiation Diagram Measurement:</strong> In open-field
+        scenarios, Time-Domain Reflectometry (TDR) is utilized to isolate the main
+        signal from reflections, enabling extremely accurate and automated
+        measurements. This ensures the superior quality standards for
+        <a href="http://www.idealantenas.com.br" target="_blank">IdealAntenas</a>.
+      </li>
+      <li>
+        <strong>Firmware Customization:</strong> Extend the NanoVNA firmware to
+        include additional test commands, real-time data logging, and specialized
+        calibration routines.
+      </li>
+      <li>
+        <strong>Robust Data Analysis and Sharing:</strong> Develop a user-friendly
+        Flask-based web server that processes, visualizes, and distributes
+        collected data, facilitating remote collaboration and real-time insights.
+      </li>
+      <li>
+        <strong>Automation and Efficiency:</strong> Provide comprehensive testing
+        tools and automation features to accelerate antenna performance evaluation
+        and streamline the entire testing process.
+      </li>
+    </ul>
 
-# About
+    <h2 id="features">Features</h2>
+    <ul>
+      <li>
+        <strong>Custom Firmware:</strong> Extended NanoVNA firmware with support
+        for additional test commands, TDR-based measurements, and enhanced
+        data logging.
+      </li>
+      <li>
+        <strong>Open-Field Antenna Testing:</strong> Specialized workflows to
+        measure antenna radiation diagrams in open-field scenarios, using TDR to
+        isolate main signals from reflections.
+      </li>
+      <li>
+        <strong>Web Server Integration:</strong> A Flask-based web server offering
+        a clean, professional front-end to visualize test results, control test
+        parameters, and manage device configurations.
+      </li>
+      <li>
+        <strong>Data Sharing and Analysis:</strong> Capabilities to capture,
+        analyze, and share real-time data from antenna testing, facilitating
+        remote monitoring and collaboration.
+      </li>
+      <li>
+        <strong>Modular Design:</strong> A well-organized repository that
+        separates firmware, hardware documentation, and web server code for
+        easier updates and contributions.
+      </li>
+    </ul>
 
-NanoVNA is very tiny handheld Vector Network Analyzer (VNA). It is
-standalone with lcd display, portable device with battery. This
-project aim to provide an RF gadget but useful instrument for
-enthusiast.
+    <h2 id="project-structure">Project Structure</h2>
+    <pre>
+NanoVNA/
+├── Firmware/         # Source code and build files for the customized firmware
+├── FlaskServer/      # Flask application for the web server, including templates and static files
+├── hardware/         # Schematics, diagrams, and hardware-related documentation
+└── README.md         # Project documentation (this file)
+    </pre>
 
-This repository contains source of NanoVNA firmware.
+    <h2 id="installation-and-setup">Installation and Setup</h2>
+    <h3>Firmware</h3>
+    <ol>
+      <li>
+        <strong>Prerequisites:</strong>
+        <ul>
+          <li>ARM toolchain (arm-none-eabi-gcc, etc.)</li>
+          <li>DFU utilities (<code>dfu-util</code>)</li>
+          <li>ChibiOS source (configured as a submodule)</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Building the Firmware:</strong>
+        <pre>
+cd Firmware
+make clean       # Optional: Clean previous builds
+make             # Compile the firmware
+        </pre>
+      </li>
+      <li>
+        <strong>Flashing the Firmware:</strong>
+        <pre>
+make flash
+        </pre>
+        <p>
+          Ensure your device is connected and properly configured in the
+          Makefile.
+        </p>
+      </li>
+    </ol>
 
-## Prepare ARM Cross Tools
+    <h3>Web Server (Flask)</h3>
+    <ol>
+      <li>
+        <strong>Prerequisites:</strong>
+        <ul>
+          <li>Python 3.x installed</li>
+          <li>Virtual environment tool (<code>venv</code>)</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Setup:</strong>
+        <pre>
+cd FlaskServer
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+        </pre>
+      </li>
+      <li>
+        <strong>Running the Server:</strong>
+        <pre>
+python app.py
+        </pre>
+        <p>
+          The server will start (by default at
+          <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a>),
+          and you can access the web interface via your browser.
+        </p>
+      </li>
+    </ol>
 
-**UPDATE**: Recent gcc version works to build NanoVNA, no need old version.
+    <h2 id="usage">Usage</h2>
+    <ul>
+      <li>
+        <strong>Open-Field Testing:</strong> Deploy the system in an open field
+        environment for highly accurate radiation diagram measurements. Use TDR
+        modes to isolate the main signal from reflections, ensuring precise and
+        automated antenna analysis.
+      </li>
+      <li>
+        <strong>Firmware Testing:</strong> After building and flashing the
+        firmware, use the dedicated test commands (customized for your antenna
+        testing needs) to evaluate the performance of antennas from
+        <a href="http://www.idealantenas.com.br" target="_blank">IdealAntenas</a>.
+      </li>
+      <li>
+        <strong>Web Interface:</strong> Access the Flask web server to view test
+        data, generate reports, and configure automated tests. The interface
+        includes:
+        <ul>
+          <li>Real-time data visualization</li>
+          <li>Test automation controls</li>
+          <li>Historical data logs and analysis tools</li>
+        </ul>
+      </li>
+    </ul>
 
-### MacOSX
+    <h2 id="development-workflow">Development Workflow</h2>
+    <ol>
+      <li>
+        <strong>Cloning the Repository:</strong>
+        <pre>
+git clone https://github.com/Gecesars/NanoWeb.git
+cd NanoWeb
+        </pre>
+      </li>
+      <li>
+        <strong>Branching:</strong>
+        <pre>
+git checkout -b feature/your-feature-name
+        </pre>
+      </li>
+      <li>
+        <strong>Committing Changes:</strong>
+        <p>
+          Make small, atomic commits with clear messages.
+        </p>
+      </li>
+      <li>
+        <strong>Merging:</strong>
+        <p>
+          Open a pull request on GitHub and merge changes after review.
+        </p>
+      </li>
+      <li>
+        <strong>Tagging Releases:</strong>
+        <pre>
+git tag -a v1.0 -m "Release version 1.0"
+git push origin --tags
+        </pre>
+      </li>
+    </ol>
 
-Install cross tools and firmware updating tool.
+    <h2 id="contributing">Contributing</h2>
+    <p>Contributions are welcome! Please follow these guidelines:</p>
+    <ul>
+      <li>Fork the repository and create your branch from <code>main</code>.</li>
+      <li>Write clear commit messages.</li>
+      <li>Document new features in this README as needed.</li>
+      <li>Submit pull requests for review.</li>
+    </ul>
 
-    $ brew tap px4/px4
-    $ brew install gcc-arm-none-eabi-80
-    $ brew install dfu-util
+    <h2 id="license">License</h2>
+    <p>
+      This project is licensed under the
+      <a href="LICENSE">MIT License</a>.
+    </p>
 
-### Linux (ubuntu)
-
-Download arm cross tools from [here](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads).
-
-    $ wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
-    $ sudo tar xfj gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2 -C /usr/local
-    $ PATH=/usr/local/gcc-arm-none-eabi-8-2018-q4-major/bin:$PATH
-    $ sudo apt install -y dfu-util
-
-## Fetch source code
-
-Fetch source and submodule.
-
-    $ git clone https://github.com/ttrftech/NanoVNA.git
-    $ cd NanoVNA
-    $ git submodule update --init --recursive
-
-## Build
-
-Just make in the directory.
-
-    $ make
-
-### Build firmware using docker
-
-Using [this docker image](https://hub.docker.com/r/edy555/arm-embedded) and without installing arm toolchain, you can build the firmware.
-
-    $ cd NanoVNA
-    $ docker run -it --rm -v $(PWD):/work edy555/arm-embedded:8.2 make
-
-## Flash firmware
-
-First, make device enter DFU mode by one of following methods.
-
-* Jumper BOOT0 pin at powering device
-* Select menu Config->DFU (needs recent firmware)
-
-Then, flash firmware using dfu-util via USB.
-
-    $ dfu-util -d 0483:df11 -a 0 -s 0x08000000:leave -D build/ch.bin
-
-Or simply use make.
-
-    $ make flash
-
-## Companion Tools
-
-There are seveal numbers of great companion PC tools from third-party.
-
-* [NanoVNASharp Windows software](https://drive.google.com/drive/folders/1IZEtx2YdqchaTO8Aa9QbhQ8g_Pr5iNhr) by hugen79
-* [NanoVNA WebSerial/WebUSB](https://github.com/cho45/NanoVNA-WebUSB-Client) by cho45
-* [Android NanoVNA app](https://play.google.com/store/apps/details?id=net.lowreal.nanovnawebapp) by cho45
-* [NanoVNASaver](https://github.com/mihtjel/nanovna-saver) by mihtjel
-* [TAPR VNAR4](https://groups.io/g/nanovna-users/files/NanoVNA%20PC%20Software/TAPR%20VNA) supports NanoVNA by erikkaashoek
-* see [python](/python/README.md) directory to use NanoVNA with Python and Jupyter Notebook.
-
-## Documentation
-
-* [NanoVNA User Guide(ja)](https://cho45.github.io/NanoVNA-manual/) by cho45. [(en:google translate)](https://translate.google.com/translate?sl=ja&tl=en&u=https%3A%2F%2Fcho45.github.io%2FNanoVNA-manual%2F)
-
-## Reference
-
-* [Schematics](/doc/nanovna-sch.pdf)
-* [PCB Photo](/doc/nanovna-pcb-photo.jpg)
-* [Block Diagram](/doc/nanovna-blockdiagram.png)
-* Kit available from https://ttrf.tk/kit/nanovna
-
-## Note
-
-Hardware design material is disclosed to prevent bad quality clone. Please let me know if you would have your own unit.
-
-## Authorized Distributor
-
-* [Nooelec](https://www.nooelec.com/store/nanovna-bundle.html)
-* Switch Science(ja) [NanoVNA-H](https://www.switch-science.com/catalog/6405/) [NanoVNA-H4](https://www.switch-science.com/catalog/6406/)
-
-## Credit
-
-* [@edy555](https://github.com/edy555)
-
-### Contributors
-
-* [@hugen79](https://github.com/hugen79)
-* [@cho45](https://github.com/cho45)
-* [@DiSlord](https://github.com/DiSlord/)
+    <h2 id="contact">Contact</h2>
+    <p>If you have any questions, suggestions, or issues, please feel free to contact:</p>
+    <ul>
+      <li>
+        Email: <a href="mailto:gecesars@gmail.com">gecesars@gmail.com</a>
+      </li>
+      <li>
+        Email:
+        <a href="mailto:engenharia@idealantenas.com.br"
+          >engenharia@idealantenas.com.br</a
+        >
+      </li>
+    </ul>
+  </body>
+</html>

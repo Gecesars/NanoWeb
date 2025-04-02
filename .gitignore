@@ -1,12 +1,13 @@
-*~
-.DS_Store
-.dep
-build*
-test
-CMSIS
-python
-*.py
-*.ipynb
-TAGS
-.emacs-dirvars
-*png
+# Ignorar ambientes virtuais
+venv/
+.venv/
+
+# Arquivos Python compilados
+__pycache__/
+*.pyc
+
+# Diretórios de build (caso haja)
+build/
+
+# Configurações do VS Code
+.vscode/

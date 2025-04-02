@@ -1,19 +1,22 @@
 {
     "configurations": [
         {
-            "name": "Mac",
+            "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/ChibiOS/os/hal/ports/STM32/**",
                 "${workspaceFolder}/ChibiOS/os/common/ext/CMSIS/ST/STM32F0xx/**",
                 "${workspaceFolder}/ChibiOS/os/common/startup/ARMCMx/**",
                 "${workspaceFolder}/ChibiOS/os/hal/ports/common/ARMCMx/**",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/usr/include",
+                "/usr/local/include"
             ],
             "defines": ["STM32F072xB"],
             "macFrameworkPath": [],
-            "compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
-            "cppStandard": "c++17"
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
         }
     ],
     "version": 4
