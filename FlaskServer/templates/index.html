@@ -1,64 +1,106 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Home - NanoWeb</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
-<body>
-  <header>
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="header-logo">
-    <h1>Welcome to NanoWeb</h1>
-    <p>Logged in as <strong>{{ current_user.username }}</strong></p>
-  </header>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width:150px;">
+      </a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-  <section class="profile-section">
-    <h2>User Profile</h2>
-    <form action="#" method="POST" id="profileForm">
-      <label for="fullName">Full Name:</label>
-      <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" placeholder="john@example.com" required>
-      <label for="phone">Phone:</label>
-      <input type="tel" id="phone" name="phone" placeholder="+1 555 123456">
-      <button type="submit">Save Profile</button>
-    </form>
-  </section>
+  <div class="container my-4">
 
-  <section class="antenna-section">
-    <h2>Antenna Selection</h2>
-    <form action="{{ url_for('select_antenna') }}" method="POST">
-      <select name="antenna_id">
-        {% for ant in antennas %}
-        <option value="{{ ant.id }}" {% if current_user.antenna_id == ant.id %}selected{% endif %}>
-          {{ ant.name }}
-        </option>
+    <!-- Display flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
         {% endfor %}
-      </select>
-      <button type="submit">Choose Antenna</button>
-    </form>
-    <p>Currently selected antenna: 
-      {% if current_user.antena %}
-        <strong>{{ current_user.antena.name }}</strong>
-      {% else %}
-        <em>None</em>
       {% endif %}
-    </p>
-    <p><a href="{{ url_for('antena') }}">Manage Antennas</a></p>
-  </section>
+    {% endwith %}
 
-  <section class="nano-navigation">
-    <h2>NanoVNA Interface</h2>
-    <p>Click the button below to open the NanoVNA control page.</p>
-    <a href="{{ url_for('nano_page') }}" class="nano-button">Open NanoVNA</a>
-  </section>
+    <h1 class="text-center">Welcome to NanoWeb</h1>
+    <p class="text-center">Logged in as <strong>{{ current_user.username }}</strong></p>
 
-  <footer>
-    <p>Contact: <a href="http://www.idealantenas.com.br" target="_blank">www.idealantenas.com.br</a></p>
-    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+    <!-- Profile Section -->
+    <div class="card mb-4">
+      <div class="card-header">User Profile</div>
+      <div class="card-body">
+        <form action="{{ url_for('profile') }}" method="POST">
+          <div class="mb-3">
+            <label for="full_name" class="form-label">Full Name:</label>
+            <input type="text" class="form-control" id="full_name" name="full_name" value="{{ current_user.full_name or '' }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email or '' }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone:</label>
+            <input type="tel" class="form-control" id="phone" name="phone" value="{{ current_user.phone or '' }}">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Antenna Selection -->
+    <div class="card mb-4">
+      <div class="card-header">Antenna Selection</div>
+      <div class="card-body">
+        <form action="{{ url_for('select_antenna') }}" method="POST" class="d-flex align-items-center">
+          <select name="antenna_id" class="form-select me-3" style="max-width:300px;">
+            {% for ant in antennas %}
+            <option value="{{ ant.id }}" {% if current_user.antenna_id == ant.id %}selected{% endif %}>
+              {{ ant.name }}
+            </option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-secondary">Choose Antenna</button>
+        </form>
+        <p class="mt-2">
+          Currently selected antenna:
+          {% if current_user.antena %}
+            <strong>{{ current_user.antena.name }}</strong>
+          {% else %}
+            <em>None</em>
+          {% endif %}
+        </p>
+        <a href="{{ url_for('antena') }}" class="btn btn-link">Manage Antennas</a>
+      </div>
+    </div>
+
+    <!-- NanoVNA Navigation -->
+    <div class="card mb-4">
+      <div class="card-header">NanoVNA Interface</div>
+      <div class="card-body text-center">
+        <p>Click the button below to access the NanoVNA control panel.</p>
+        <a href="{{ url_for('nano_page') }}" class="btn btn-danger btn-lg">Open NanoVNA</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-white text-center py-3">
+    <p>Contact: <a href="http://www.idealantenas.com.br" class="text-white">www.idealantenas.com.br</a></p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>

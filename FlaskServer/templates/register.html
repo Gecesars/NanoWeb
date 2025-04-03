@@ -1,38 +1,52 @@
+<!-- templates/register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Register - NanoWeb</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <div class="header-logo">
-    <img src="{{ url_for('static', filename='logo.png') }}" class="logo" alt="Logo">
+<body class="bg-light">
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-header text-center">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 120px;">
+            <h4 class="mt-2">Register</h4>
+          </div>
+          <div class="card-body">
+            <form action="{{ url_for('register') }}" method="POST">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="username" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password" required>
+              </div>
+              <div class="mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="full_name" id="full_name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" name="phone" id="phone">
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+          </div>
+          <div class="card-footer text-center">
+            <p>Already have an account? <a href="{{ url_for('login_route') }}">Login here</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="login-container">
-    <h2>Register</h2>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flashes">
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <form method="POST" action="{{ url_for('register') }}">
-      <input type="text" name="username" placeholder="Username" required>
-      <input type="password" name="password" placeholder="Password" required>
-      <button type="submit">Register</button>
-    </form>
-    <p>Already have an account? <a href="{{ url_for('login_route') }}">Sign in here</a></p>
-  </div>
-
-  <footer>
-    <p>Contact: <a href="http://www.idealantenas.com.br">www.idealantenas.com.br</a></p>
-  </footer>
-
-  <script src="{{ url_for('static', filename='index.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
