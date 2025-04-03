@@ -1,305 +1,159 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NanoWeb Project</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 2em;
-        line-height: 1.6;
-      }
-      .language-switch {
-        position: fixed;
-        top: 1em;
-        right: 2em;
-      }
-      .language-switch a {
-        margin-left: 1em;
-        text-decoration: none;
-        color: #007acc;
-      }
-      pre {
-        background-color: #f4f4f4;
-        padding: 1em;
-        overflow-x: auto;
-      }
-      code {
-        background-color: #eee;
-        padding: 0.2em 0.4em;
-        border-radius: 3px;
-      }
-      h1,
-      h2,
-      h3,
-      h4,
-      h5 {
-        margin-top: 1.2em;
-      }
-      ul {
-        margin-left: 2em;
-      }
-      a {
-        color: #007acc;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Language Switch Placeholder -->
-    <div class="language-switch">
-      <strong>Language:</strong>
-      <a href="#" title="Switch to Portuguese">Portuguese</a>
-      <a href="#" title="Switch to Spanish">Spanish</a>
-      <!-- Currently English -->
-    </div>
+<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <h1 style="margin-top: 0;">NanoWeb &ndash; NanoVNA Test System</h1>
 
-    <h1>NanoWeb</h1>
-    <p>
-      NanoWeb is a comprehensive project focused on customizing and developing
-      an advanced antenna testing system. This solution leverages a web server
-      to capture, analyze, and share data related to antenna products from
-      <a href="http://www.idealantenas.com.br" target="_blank">IdealAntenas</a>,
-      providing a professional and user-friendly interface for antenna testing
-      and data management.
-    </p>
+  <p>
+    NanoWeb is a complete, professional-level application for testing, calibrating, and monitoring a NanoVNA in real-time.
+    The system integrates:
+  </p>
+  <ul>
+    <li><strong>NanoVNA Management:</strong> Real communication with the device via <code>pynanovna</code> to perform sweeps, streaming of S-parameters, calibration, and exporting charts.</li>
+    <li><strong>Advanced Web Interface:</strong> Built with Flask, providing:
+      <ul>
+        <li>Full control of the NanoVNA (band configuration, number of points, single or continuous sweep mode).</li>
+        <li>Real-time display of S-parameters (magnitude and phase), Smith Chart (generated with <code>scikit-rf</code>), and TDR.</li>
+        <li>Calibration functions and PNG/Touchstone exporting.</li>
+        <li>Modern, responsive layout with a 3D sidebar, status bar, and action buttons.</li>
+      </ul>
+    </li>
+    <li><strong>User and Antenna Management:</strong> Registration, login, antenna selection, and PDF/image uploads for datasheets.</li>
+  </ul>
 
-    <h2>Table of Contents</h2>
-    <ul>
-      <li><a href="#overview">Overview</a></li>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#project-structure">Project Structure</a></li>
-      <li><a href="#installation-and-setup">Installation and Setup</a></li>
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#development-workflow">Development Workflow</a></li>
-      <li><a href="#contributing">Contributing</a></li>
-      <li><a href="#license">License</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+  <hr style="margin: 2em 0;" />
 
-    <h2 id="overview">Overview</h2>
-    <p>
-      NanoWeb integrates customized firmware for antenna testing devices with a
-      modern web interface. The primary objectives are:
-    </p>
-    <ul>
-      <li>
-        <strong>Advanced Radiation Diagram Measurement:</strong> In open-field
-        scenarios, Time-Domain Reflectometry (TDR) is utilized to isolate the main
-        signal from reflections, enabling extremely accurate and automated
-        measurements. This ensures the superior quality standards for
-        <a href="http://www.idealantenas.com.br" target="_blank">IdealAntenas</a>.
-      </li>
-      <li>
-        <strong>Firmware Customization:</strong> Extend the NanoVNA firmware to
-        include additional test commands, real-time data logging, and specialized
-        calibration routines.
-      </li>
-      <li>
-        <strong>Robust Data Analysis and Sharing:</strong> Develop a user-friendly
-        Flask-based web server that processes, visualizes, and distributes
-        collected data, facilitating remote collaboration and real-time insights.
-      </li>
-      <li>
-        <strong>Automation and Efficiency:</strong> Provide comprehensive testing
-        tools and automation features to accelerate antenna performance evaluation
-        and streamline the entire testing process.
-      </li>
-    </ul>
+  <h2>Features</h2>
+  <ul>
+    <li><strong>Authentication &amp; Profile:</strong> Register and login securely with Flask-Login.</li>
+    <li><strong>Antenna Management:</strong> Add, list, and select antennas, each with a PDF datasheet, image, and description.</li>
+    <li><strong>NanoVNA Interface:</strong>
+      <ul>
+        <li>Sweep configuration (start/stop frequency in MHz, number of points).</li>
+        <li>Single or continuous sweep modes, with adjustable polling intervals.</li>
+        <li>Real-time S-parameters (S11 &amp; S21 in dB and phase), displayed in a canvas or via generated PNG images.</li>
+        <li>Professional charts (Smith Chart, TDR) using <code>scikit-rf</code> and <code>matplotlib</code>.</li>
+        <li>Device calibration and data export (PNG images, Touchstone files, etc.).</li>
+        <li>Live status: device connection, last sweep timestamp, calibration state.</li>
+      </ul>
+    </li>
+  </ul>
 
-    <h2 id="features">Features</h2>
-    <ul>
-      <li>
-        <strong>Custom Firmware:</strong> Extended NanoVNA firmware with support
-        for additional test commands, TDR-based measurements, and enhanced
-        data logging.
-      </li>
-      <li>
-        <strong>Open-Field Antenna Testing:</strong> Specialized workflows to
-        measure antenna radiation diagrams in open-field scenarios, using TDR to
-        isolate main signals from reflections.
-      </li>
-      <li>
-        <strong>Web Server Integration:</strong> A Flask-based web server offering
-        a clean, professional front-end to visualize test results, control test
-        parameters, and manage device configurations.
-      </li>
-      <li>
-        <strong>Data Sharing and Analysis:</strong> Capabilities to capture,
-        analyze, and share real-time data from antenna testing, facilitating
-        remote monitoring and collaboration.
-      </li>
-      <li>
-        <strong>Modular Design:</strong> A well-organized repository that
-        separates firmware, hardware documentation, and web server code for
-        easier updates and contributions.
-      </li>
-    </ul>
+  <hr style="margin: 2em 0;" />
 
-    <h2 id="project-structure">Project Structure</h2>
-    <pre>
-NanoVNA/
-├── Firmware/         # Source code and build files for the customized firmware
-├── FlaskServer/      # Flask application for the web server, including templates and static files
-├── hardware/         # Schematics, diagrams, and hardware-related documentation
-└── README.md         # Project documentation (this file)
-    </pre>
+  <h2>Project Structure</h2>
+  <pre style="background: #f8f8f8; padding: 1em; overflow: auto; border-radius: 4px;">
+FlaskServer/
+├── config.py            # Configuration (SECRET_KEY, PostgreSQL URI, upload folder)
+├── extensions.py        # Flask extensions (SQLAlchemy, LoginManager)
+├── models.py            # Database models (User, Antena)
+├── app.py               # Main Flask application and routes (including NanoVNA routes)
+├── migrations/          # Database migration scripts (generated by Flask-Migrate)
+├── templates/
+│   ├── index.html       # Home page with user profile fields, antenna selection, and link to Nano
+│   ├── login.html       # User login page
+│   ├── register.html    # User registration page
+│   ├── antena.html      # Antenna management (upload PDF/image, description)
+│   └── nano.html        # NanoVNA control interface (sweep config, streaming, calibration)
+└── static/
+    ├── uploads/         # Folder for uploaded PDF/image files
+    ├── index.css        # Common styles for index, login, register, antena
+    ├── nano.css         # Styles for nano.html (3D sidebar, layout, etc.)
+    └── nano.js          # JavaScript for nano.html (AJAX calls, real-time chart rendering)
+  </pre>
 
-    <h2 id="installation-and-setup">Installation and Setup</h2>
-    <h3>Firmware</h3>
-    <ol>
-      <li>
-        <strong>Prerequisites:</strong>
-        <ul>
-          <li>ARM toolchain (arm-none-eabi-gcc, etc.)</li>
-          <li>DFU utilities (<code>dfu-util</code>)</li>
-          <li>ChibiOS source (configured as a submodule)</li>
-        </ul>
-      </li>
-      <li>
-        <strong>Building the Firmware:</strong>
-        <pre>
-cd Firmware
-make clean       # Optional: Clean previous builds
-make             # Compile the firmware
-        </pre>
-      </li>
-      <li>
-        <strong>Flashing the Firmware:</strong>
-        <pre>
-make flash
-        </pre>
-        <p>
-          Ensure your device is connected and properly configured in the
-          Makefile.
-        </p>
-      </li>
-    </ol>
+  <hr style="margin: 2em 0;" />
 
-    <h3>Web Server (Flask)</h3>
-    <ol>
-      <li>
-        <strong>Prerequisites:</strong>
-        <ul>
-          <li>Python 3.x installed</li>
-          <li>Virtual environment tool (<code>venv</code>)</li>
-        </ul>
-      </li>
-      <li>
-        <strong>Setup:</strong>
-        <pre>
-cd FlaskServer
-python3 -m venv .venv
-source .venv/bin/activate
+  <h2>Installation &amp; Setup</h2>
+  <ol>
+    <li>
+      <strong>Clone the repository:</strong>
+      <pre style="background: #f8f8f8; padding: 1em; overflow: auto; border-radius: 4px;">
+git clone https://github.com/yourusername/NanoWeb.git
+cd NanoWeb/FlaskServer
+      </pre>
+    </li>
+    <li>
+      <strong>Create and activate a virtual environment, then install dependencies:</strong>
+      <pre style="background: #f8f8f8; padding: 1em; overflow: auto; border-radius: 4px;">
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-        </pre>
-      </li>
-      <li>
-        <strong>Running the Server:</strong>
-        <pre>
-python app.py
-        </pre>
-        <p>
-          The server will start (by default at
-          <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a>),
-          and you can access the web interface via your browser.
-        </p>
-      </li>
-    </ol>
+      </pre>
+      Make sure <code>requirements.txt</code> includes <code>Flask</code>, <code>Flask-Login</code>, <code>Flask-SQLAlchemy</code>, <code>Flask-Migrate</code>, <code>psycopg2-binary</code>, <code>pynanovna</code>, <code>scikit-rf</code>, <code>matplotlib</code>, <code>numpy</code>, etc.
+    </li>
+    <li>
+      <strong>Set up PostgreSQL:</strong>  
+      Install PostgreSQL and create a database:
+      <pre style="background: #f8f8f8; padding: 1em; overflow: auto; border-radius: 4px;">
+sudo -u postgres psql -c "CREATE DATABASE nanoweb;"
+      </pre>
+      Ensure your <code>config.py</code> has the correct connection URI.
+    </li>
+    <li>
+      <strong>Initialize and upgrade the database:</strong>
+      <pre style="background: #f8f8f8; padding: 1em; overflow: auto; border-radius: 4px;">
+export FLASK_APP=app.py
+flask db init       # only if migrations folder doesn't exist
+flask db migrate -m "Initial migration"
+flask db upgrade
+      </pre>
+    </li>
+    <li>
+      <strong>Run the application:</strong>
+      <pre style="background: #f8f8f8; padding: 1em; overflow: auto; border-radius: 4px;">
+flask run
+      </pre>
+      By default, the server runs at <a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a>.
+      Or run with <code>python app.py</code> if you've configured <code>if __name__ == "__main__"</code>.
+    </li>
+  </ol>
 
-    <h2 id="usage">Usage</h2>
-    <ul>
-      <li>
-        <strong>Open-Field Testing:</strong> Deploy the system in an open field
-        environment for highly accurate radiation diagram measurements. Use TDR
-        modes to isolate the main signal from reflections, ensuring precise and
-        automated antenna analysis.
-      </li>
-      <li>
-        <strong>Firmware Testing:</strong> After building and flashing the
-        firmware, use the dedicated test commands (customized for your antenna
-        testing needs) to evaluate the performance of antennas from
-        <a href="http://www.idealantenas.com.br" target="_blank">IdealAntenas</a>.
-      </li>
-      <li>
-        <strong>Web Interface:</strong> Access the Flask web server to view test
-        data, generate reports, and configure automated tests. The interface
-        includes:
-        <ul>
-          <li>Real-time data visualization</li>
-          <li>Test automation controls</li>
-          <li>Historical data logs and analysis tools</li>
-        </ul>
-      </li>
-    </ul>
+  <hr style="margin: 2em 0;" />
 
-    <h2 id="development-workflow">Development Workflow</h2>
-    <ol>
-      <li>
-        <strong>Cloning the Repository:</strong>
-        <pre>
-git clone https://github.com/Gecesars/NanoWeb.git
-cd NanoWeb
-        </pre>
-      </li>
-      <li>
-        <strong>Branching:</strong>
-        <pre>
-git checkout -b feature/your-feature-name
-        </pre>
-      </li>
-      <li>
-        <strong>Committing Changes:</strong>
-        <p>
-          Make small, atomic commits with clear messages.
-        </p>
-      </li>
-      <li>
-        <strong>Merging:</strong>
-        <p>
-          Open a pull request on GitHub and merge changes after review.
-        </p>
-      </li>
-      <li>
-        <strong>Tagging Releases:</strong>
-        <pre>
-git tag -a v1.0 -m "Release version 1.0"
-git push origin --tags
-        </pre>
-      </li>
-    </ol>
+  <h2>Usage</h2>
+  <ol>
+    <li>
+      <strong>Register and Log In:</strong>  
+      Go to <code>/register</code> to create a user, then <code>/login</code> to authenticate.
+    </li>
+    <li>
+      <strong>Select or Add Antennas:</strong>  
+      In <code>/antena</code>, create new antennas (upload PDF/image, etc.) or select an existing one in the home page.
+    </li>
+    <li>
+      <strong>Open NanoVNA Interface:</strong>  
+      Click the button “Open NanoVNA” on the home page (<code>index.html</code>) to navigate to <code>/nano</code>.
+    </li>
+    <li>
+      <strong>Configure and Sweep:</strong>  
+      On <code>nano.html</code>, specify the start/stop frequencies and number of points. Choose <em>single</em> or <em>continuous</em> mode and start the sweep.
+    </li>
+    <li>
+      <strong>View Data in Real Time:</strong>  
+      For continuous mode, the page polls <code>/nano/data</code> periodically, rendering updated S-parameters in the canvas. You can also export images or Touchstone files if implemented in the back end.
+    </li>
+  </ol>
 
-    <h2 id="contributing">Contributing</h2>
-    <p>Contributions are welcome! Please follow these guidelines:</p>
-    <ul>
-      <li>Fork the repository and create your branch from <code>main</code>.</li>
-      <li>Write clear commit messages.</li>
-      <li>Document new features in this README as needed.</li>
-      <li>Submit pull requests for review.</li>
-    </ul>
+  <hr style="margin: 2em 0;" />
 
-    <h2 id="license">License</h2>
-    <p>
-      This project is licensed under the
-      <a href="LICENSE">MIT License</a>.
-    </p>
+  <h2>APIs and Endpoints</h2>
+  <ul>
+    <li><code>POST /nano/sweep</code>: Receives <code>start_mhz</code>, <code>stop_mhz</code>, <code>points</code>, initiates a real sweep on the NanoVNA, and stores the data in memory.</li>
+    <li><code>GET /nano/data</code>: Returns the most recent S-parameter data (freq in MHz, S11 dB/phase, S21 dB/phase) as JSON.</li>
+    <li><code>POST /nano/calibrate</code>: Triggers device calibration using <code>pynanovna</code>.</li>
+    <li><code>GET /nano/export_image</code>: Generates and returns a PNG image of S11 vs. frequency. You can create similar routes for Smith Chart, TDR, etc.</li>
+    <li><code>GET /nano/status</code>: Returns the device status (connection, last sweep timestamp, etc.) in JSON.</li>
+  </ul>
 
-    <h2 id="contact">Contact</h2>
-    <p>If you have any questions, suggestions, or issues, please feel free to contact:</p>
-    <ul>
-      <li>
-        Email: <a href="mailto:gecesars@gmail.com">gecesars@gmail.com</a>
-      </li>
-      <li>
-        Email:
-        <a href="mailto:engenharia@idealantenas.com.br"
-          >engenharia@idealantenas.com.br</a
-        >
-      </li>
-    </ul>
-  </body>
-</html>
+  <hr style="margin: 2em 0;" />
+
+  <h2>License</h2>
+  <p>
+    This project is licensed under the <strong>MIT License</strong>. See the
+    <code>LICENSE</code> file for details.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    For questions or suggestions, please open an issue in this repository or contact
+    <a href="mailto:gecesars@gmail.com">gecesars@gmail.com</a>.
+  </p>
+</div>

@@ -1,0 +1,72 @@
+/* static/nano.css */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: #e0e0e0;
+  }
+  
+  header {
+    background: #222;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .header-logo {
+    width: 120px;
+    margin-bottom: 10px;
+  }
+  
+  .nano-config, .nano-chart {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 900px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .nano-config h2, .nano-chart h2 {
+    margin-top: 0;
+  }
+  
+  .nano-config label {
+    display: inline-block;
+    width: 120px;
+  }
+  
+  .nano-config input, .nano-config select {
+    width: calc(100% - 140px);
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .nano-config button {
+    padding: 10px 15px;
+    background: #007ACC;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .nano-config button:hover {
+    background: #005999;
+  }
+  
+  .nano-chart canvas {
+    display: block;
+    margin: 20px auto;
+    background: #222;
+    border: 1px solid #ccc;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 10px;
+    background: #ccc;
+    margin-top: 20px;
+  }
+  

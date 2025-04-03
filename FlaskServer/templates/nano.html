@@ -1,0 +1,52 @@
+<!-- templates/nano.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NanoVNA Control</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='nano.css') }}">
+</head>
+<body>
+  <header>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="header-logo">
+    <h1>NanoVNA Control Panel</h1>
+    <p>User: <strong>{{ current_user.username }}</strong></p>
+  </header>
+
+  <section class="nano-config">
+    <h2>Sweep Configuration</h2>
+    <form id="nanoForm">
+      <label for="start_mhz">Start (MHz):</label>
+      <input type="number" step="0.1" id="start_mhz" name="start_mhz" value="700" required>
+
+      <label for="stop_mhz">Stop (MHz):</label>
+      <input type="number" step="0.1" id="stop_mhz" name="stop_mhz" value="900" required>
+
+      <label for="points">Points:</label>
+      <input type="number" id="points" name="points" value="101" required>
+
+      <label for="mode">Sweep Mode:</label>
+      <select id="mode" name="mode">
+        <option value="single">Single Sweep</option>
+        <option value="continuous">Continuous Sweep</option>
+      </select>
+
+      <button type="button" onclick="startSweep()">Start Sweep</button>
+      <button type="button" onclick="stopSweep()">Stop Sweep</button>
+    </form>
+  </section>
+
+  <section class="nano-chart">
+    <h2>Real-Time Data</h2>
+    <p id="chartStatus">Status: Waiting...</p>
+    <canvas id="vnaChart" width="800" height="400"></canvas>
+  </section>
+
+  <footer>
+    <p>Contact: <a href="http://www.idealantenas.com.br" target="_blank">www.idealantenas.com.br</a></p>
+    <p><a href="{{ url_for('index') }}">Back to Home</a> | <a href="{{ url_for('logout') }}">Logout</a></p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='nano.js') }}"></script>
+</body>
+</html>
