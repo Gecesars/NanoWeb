@@ -4,14 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <title>NanoVNA Control Panel</title>
+  <!-- Bootstrap CSS and Chart.js from CDNs -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='nano.css') }}">
 </head>
 <body class="bg-secondary">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
+      <!-- Larger logo: 200px -->
       <a class="navbar-brand" href="#">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width:150px;">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width:200px;">
       </a>
       <span class="navbar-text ms-auto">
         NanoVNA Control &mdash; User: {{ current_user.username }}
@@ -23,19 +26,8 @@
   </nav>
 
   <div class="container my-4">
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
 
-    <!-- Sweep Configuration -->
+    <!-- Sweep Configuration (unchanged) -->
     <div class="card mb-4">
       <div class="card-header">Sweep Configuration</div>
       <div class="card-body">
@@ -48,16 +40,24 @@
             <label for="stop_mhz" class="form-label">Stop (MHz)</label>
             <input type="number" step="0.1" class="form-control" id="stop_mhz" name="stop_mhz" value="900" required>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label for="points" class="form-label">Points</label>
             <input type="number" class="form-control" id="points" name="points" value="101" required>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <label for="mode" class="form-label">Sweep Mode</label>
             <select class="form-select" id="mode" name="mode">
-              <option value="single">Single Sweep</option>
-              <option value="continuous">Continuous Sweep</option>
+              <option value="single">Single</option>
+              <option value="continuous">Continuous</option>
             </select>
+          </div>
+          <div class="col-md-2">
+            <label for="interpPoints" class="form-label">Interp Points</label>
+            <input type="number" class="form-control" id="interpPoints" value="101">
+          </div>
+          <div class="col-md-2">
+            <label for="smoothWindow" class="form-label">Smooth Window</label>
+            <input type="number" class="form-control" id="smoothWindow" value="0">
           </div>
           <div class="col-12 text-end">
             <button type="button" class="btn btn-primary" onclick="startSweep()">Start Sweep</button>
@@ -67,22 +67,22 @@
       </div>
     </div>
 
-    <!-- Calibration Steps -->
+    <!-- Calibration Steps (unchanged) -->
     <div class="card mb-4">
-      <div class="card-header">Calibration Steps (SOLT)</div>
+      <div class="card-header">Calibration (SOLT) Steps</div>
       <div class="card-body">
         <div class="d-flex flex-wrap gap-2">
-          <button class="btn btn-outline-info" onclick="calibrationStep('open')">Open</button>
-          <button class="btn btn-outline-info" onclick="calibrationStep('short')">Short</button>
-          <button class="btn btn-outline-info" onclick="calibrationStep('load')">Load</button>
-          <button class="btn btn-outline-info" onclick="calibrationStep('isolation')">Isolation</button>
-          <button class="btn btn-outline-info" onclick="calibrationStep('through')">Through</button>
-          <button class="btn btn-success" onclick="finishCalibration()">Finish Calibration</button>
+          <button type="button" class="btn btn-outline-info" onclick="calibrationStep('open')">Open</button>
+          <button type="button" class="btn btn-outline-info" onclick="calibrationStep('short')">Short</button>
+          <button type="button" class="btn btn-outline-info" onclick="calibrationStep('load')">Load</button>
+          <button type="button" class="btn btn-outline-info" onclick="calibrationStep('isolation')">Isolation</button>
+          <button type="button" class="btn btn-outline-info" onclick="calibrationStep('through')">Through</button>
+          <button type="button" class="btn btn-success" onclick="finishCalibration()">Finish Calibration</button>
         </div>
       </div>
     </div>
 
-    <!-- Save / Load Calibration -->
+    <!-- Save / Load Calibration (unchanged) -->
     <div class="card mb-4">
       <div class="card-header">Save / Load Calibration</div>
       <div class="card-body">
@@ -107,33 +107,20 @@
       </div>
     </div>
 
-    <!-- Real-Time Chart -->
+    <!-- Real-Time Chart: now with dark background and a single chart for both S11 and S21 -->
     <div class="card mb-4">
       <div class="card-header">Real-Time Data</div>
-      <div class="card-body text-center">
-        <p id="chartStatus">Status: Waiting...</p>
+      <!-- Dark background for the chart area -->
+      <div class="card-body text-center" style="background-color: #222;">
+        <p id="chartStatus" class="text-white">Status: Waiting...</p>
         <canvas id="vnaChart" width="800" height="400"></canvas>
-      </div>
-    </div>
-
-    <!-- Graph Options -->
-    <div class="card mb-4">
-      <div class="card-header">Graph Options</div>
-      <div class="card-body">
-        <div class="btn-group">
-          <button type="button" class="btn btn-outline-primary" onclick="setGraphType('s11')">S11 dB</button>
-          <button type="button" class="btn btn-outline-primary" onclick="setGraphType('s21')">S21 dB</button>
-          <button type="button" class="btn btn-outline-primary" onclick="setGraphType('phase')">Phase</button>
-          <button type="button" class="btn btn-outline-primary" onclick="setGraphType('smith')">Smith</button>
-          <button type="button" class="btn btn-outline-primary" onclick="setGraphType('tdr')">TDR</button>
-        </div>
       </div>
     </div>
   </div>
 
   <footer class="bg-dark text-white text-center py-3">
     <p>Contact: <a href="http://www.idealantenas.com.br" class="text-white" target="_blank">www.idealantenas.com.br</a></p>
-    <p><a href="{{ url_for('index') }}" class="text-white">Back to Home</a></p>
+    <p><a href="{{ url_for('index') }}" class="text-white">Back to Home</a> | <a href="{{ url_for('logout') }}" class="text-white">Logout</a></p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

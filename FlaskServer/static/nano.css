@@ -1,12 +1,32 @@
 /* static/nano.css */
 body {
-    background: #e0e0e0;
-  }
-  
-  #vnaChart {
-    background: #222;
-    border: 1px solid #ccc;
-    display: block;
-    margin: 20px auto;
-  }
-  
+  background: #e0e0e0;
+}
+header {
+  background: #222;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+}
+.header-logo {
+  width: 200px;
+  margin-bottom: 10px;
+}
+.nano-config, .nano-chart {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 900px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.nano-config label {
+  font-weight: bold;
+}
+footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
